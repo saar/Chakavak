@@ -1,6 +1,0 @@
-MIDlet-1: HelloMIDlet, , hello.HelloMIDlet
-MIDlet-Vendor: Vendor
-MIDlet-Name: Chakavak
-MIDlet-Version: 1.0
-MicroEdition-Configuration: CLDC-1.1
-MicroEdition-Profile: MIDP-2.1
