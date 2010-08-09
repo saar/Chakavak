@@ -24,23 +24,23 @@ import java.util.Date;
  */
 public abstract class Status {
 
-    private long id;
-    private String text;
-    private boolean truncated;
-    private Date create_at;
-    private long in_reply_to_status_id;
-    private String source;
-    private User user;
-    private long in_reply_to_user_id;
-    private String in_reply_to_screen_name;
-    private Geo geo;
-    private boolean favorited;
+    private long id = -1;
+    private String text = "";
+    private boolean truncated = false;
+    private Date create_at = null;
+    private long in_reply_to_status_id = -1;
+    private String source = "";
+    private User user = null;
+    private long in_reply_to_user_id = -1;
+    private String in_reply_to_screen_name = "";
+    private Geo geo = null;
+    private boolean favorited = false;
 
-    public Status(String text) {
+    public Status(String text) throws ParserException, StatusParsingException {
         pars(text);
     }
 
-    abstract protected void pars(String text);
+    abstract protected void pars(String text) throws ParserException, StatusParsingException;
 
     /**
      * @return the id
@@ -196,4 +196,3 @@ public abstract class Status {
         this.favorited = favorited;
     }
 }
-

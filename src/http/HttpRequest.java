@@ -94,32 +94,38 @@ public class HttpRequest {
 
 
 
-            int length = (int) connection.getLength();
-            byte[] responseData = null;
-            if (length != -1) {
-                responseData = new byte[length];
-                in = new DataInputStream(connection.openInputStream());
-                in.readFully(responseData);
-            } else {
-                // If content length is not given, read in chunks.
-                int chunkSize = 512;
-                int index = 0;
-                int readLength = 0;
-                in = new DataInputStream(connection.openInputStream());
-                responseData = new byte[chunkSize];
-                do {
-                    if (responseData.length < index + chunkSize) {
-                        byte[] newData = new byte[index + chunkSize];
-                        System.arraycopy(responseData, 0, newData, 0, responseData.length);
-                        responseData = newData;
-                    }
-                    readLength = in.read(responseData, index, chunkSize);
-                    index += readLength;
-                } while (readLength == chunkSize);
-                length = index;
+//            int length = (int) connection.getLength();
+//            byte[] responseData = null;
+//            if (length != -1) {
+//                responseData = new byte[length];
+//                in = new DataInputStream(connection.openInputStream());
+//                in.readFully(responseData);
+//            } else {
+//                // If content length is not given, read in chunks.
+//                int chunkSize = 512;
+//                int index = 0;
+//                int readLength = 0;
+//                in = new DataInputStream(connection.openInputStream());
+//                responseData = new byte[chunkSize];
+//                do {
+//                    if (responseData.length < index + chunkSize) {
+//                        byte[] newData = new byte[index + chunkSize];
+//                        System.arraycopy(responseData, 0, newData, 0, responseData.length);
+//                        responseData = newData;
+//                    }
+//                    readLength = in.read(responseData, index, chunkSize);
+//                    index += readLength;
+//                } while (readLength == chunkSize);
+//                length = index;
+//            }
+            StringBuffer buffer = new StringBuffer();
+            in = new DataInputStream(connection.openInputStream());
+            int temp;
+            while ((temp = in.read()) != -1) {
+                buffer.append((char) temp);
             }
 
-            httpResponse = new HttpResponse(responseData);
+            httpResponse = new HttpResponse(buffer.toString());
 
 
         } catch (IOException e) {

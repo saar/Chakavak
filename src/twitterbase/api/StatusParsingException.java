@@ -14,27 +14,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package statusnet;
+package twitterbase.api;
 
 /**
  *
  * @author Ramin Gomari
  */
-public class Geo extends twitterbase.api.Geo {
+public class StatusParsingException extends Exception {
 
-    public Geo(long latitude, long longitude) {
-        super(latitude, longitude);
-    }
-
-    public Geo() {
-        super();
-    }
-
-    /**
-     * Create a geo from comma or space seprated string
-     * @param geo comma or space seprated of lat and long
-     */
-    public Geo(String geo) {
-        super(geo);
+    public StatusParsingException(String s) {
+        super(s);
     }
 }

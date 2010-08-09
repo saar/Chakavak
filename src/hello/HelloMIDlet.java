@@ -2,13 +2,17 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package hello;
 
 import java.io.IOException;
+import java.util.Date;
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
+import statusnet.Geo;
 import statusnet.StatusnetApi;
+import twitterbase.api.ParserException;
+import twitterbase.api.StatusParsingException;
+import utilities.DateTools;
 
 /**
  * @author ramin
@@ -16,7 +20,6 @@ import statusnet.StatusnetApi;
 public class HelloMIDlet extends MIDlet implements CommandListener {
 
     private boolean midletPaused = false;
-
     //<editor-fold defaultstate="collapsed" desc=" Generated Fields ">//GEN-BEGIN:|fields|0|
     private Command exitCommand;
     private Form form;
@@ -31,7 +34,6 @@ public class HelloMIDlet extends MIDlet implements CommandListener {
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Methods ">//GEN-BEGIN:|methods|0|
     //</editor-fold>//GEN-END:|methods|0|
-
     //<editor-fold defaultstate="collapsed" desc=" Generated Method: initialize ">//GEN-BEGIN:|0-initialize|0|0-preInitialize
     /**
      * Initilizes the application.
@@ -154,7 +156,7 @@ public class HelloMIDlet extends MIDlet implements CommandListener {
      * Returns a display instance.
      * @return the display instance.
      */
-    public Display getDisplay () {
+    public Display getDisplay() {
         return Display.getDisplay(this);
     }
 
@@ -162,7 +164,7 @@ public class HelloMIDlet extends MIDlet implements CommandListener {
      * Exits MIDlet.
      */
     public void exitMIDlet() {
-        switchDisplayable (null, null);
+        switchDisplayable(null, null);
         destroyApp(true);
         notifyDestroyed();
     }
@@ -173,19 +175,22 @@ public class HelloMIDlet extends MIDlet implements CommandListener {
      */
     public void startApp() {
         if (midletPaused) {
-            resumeMIDlet ();
+            resumeMIDlet();
         } else {
             try {
                 initialize();
                 startMIDlet();
-                StatusnetApi api = new StatusnetApi("http://identi.ca", "Chakavak", "Username", "password");
-                api.update("normaldent");
-                api.update("@reply", 1234/*id*/);
-                api.update("d direct");
+                StatusnetApi api = new StatusnetApi("http://identi.ca", "Chakavak", "chakavak", "kavakahc");
+                System.out.println(api.update("test at " + new Date().toString()));
 
             } catch (IOException ex) {
                 ex.printStackTrace();
+            } catch (ParserException ex) {
+                ex.printStackTrace();
+            } catch (StatusParsingException ex) {
+                ex.printStackTrace();
             }
+
         }
         midletPaused = false;
     }
@@ -203,5 +208,4 @@ public class HelloMIDlet extends MIDlet implements CommandListener {
      */
     public void destroyApp(boolean unconditional) {
     }
-
 }

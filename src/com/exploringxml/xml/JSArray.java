@@ -1,4 +1,4 @@
-/* Copyright (c) 2000 Michael Claßen <mclassen@internet.com>
+/* Copyright (c) 2000 Michael Claï¿½en <mclassen@internet.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,7 +16,6 @@
  *
  * $Id: JSArray.java,v 1.1 2000/04/03 07:43:37 classen Exp $
  */
-
 package com.exploringxml.xml;
 
 import java.util.Hashtable;
@@ -27,103 +26,100 @@ import java.util.Vector;
  * not completely generic because only specific properties are allowed
  * <p>would need Reflection to make it completely generic
  *
- * @author    Michael Claßen
+ * @author    Michael Claï¿½en
  * @version   $Revision: 1.1 $
  */
 class JSArray {
 
-  // underlying element holder
-  private Vector v = new Vector();
+    // underlying element holder
+    private Vector v = new Vector();
+    // constants for the currently supported object properties
+    static final String Name = "name";
+    static final String Attributes = "attributes";
+    static final String Contents = "contents";
+    static final String Value = "value";
 
-  // constants for the currently supported object properties
-  static final String Name = "name";
-  static final String Attributes = "attributes";
-  static final String Contents = "contents";
-  static final String Value = "value";
-
-  /**
-   * gets the object with a certain index
-   *
-   * @param     idx the object's index in the array
-   * @return    Object at the respective index
-   */
-  Object elementAt(int idx) {
-    return v.elementAt(idx);
-  }
-
-  /**
-   * sets the object with a certain index
-   *
-   * @param     val the object to be set in the array
-   * @param     idx the object's index in the array
-   */
-  void setElementAt(Object val, int idx) {
-    v.insertElementAt(val, idx);
-  }
-
-  /**
-   * sets the object with a certain index
-   *
-   * @param     val the object' property to be set
-   * @param     idx the object's index in the array
-   * @param     prop the name of the object's property to be set;
-   *            currently can only be: name, attributes, contents, value
-   */
-  void setElementAt(Object val, int idx, String prop) {
-    Node n = (Node) v.elementAt(idx);
-    if (prop == Name) {
-      n.name = (String) val;
+    /**
+     * gets the object with a certain index
+     *
+     * @param     idx the object's index in the array
+     * @return    Object at the respective index
+     */
+    Object elementAt(int idx) {
+        return v.elementAt(idx);
     }
-    else if (prop == Attributes) {
-      n.attributes = (Hashtable) val;
-    }
-    else if (prop == Contents) {
-      n.contents = (JSArray) val;
-    }
-    else if (prop == Value) {
-      n.value = (String) val;
-    }
-  }
 
-  /**
-   * returns the length / size of the array
-   *
-   * @return    the array length
-   */
-  int length() {
-    return v.size();
-  }
-
-  /**
-   * splits a string into an array of strings, broken at a distinct separator
-   *
-   * @param     str the String to be split
-   * @param     sep the seperator at which to split
-   */
-  void split(String str, String sep) {
-    v.removeAllElements();
-    int oldidx = 0, newidx, skip = sep.length();
-    while((newidx = str.indexOf(sep, oldidx)) != -1) {
-      v.addElement(str.substring(oldidx, newidx));
-      oldidx = newidx + skip;
+    /**
+     * sets the object with a certain index
+     *
+     * @param     val the object to be set in the array
+     * @param     idx the object's index in the array
+     */
+    void setElementAt(Object val, int idx) {
+        v.insertElementAt(val, idx);
     }
-    v.addElement(str.substring(oldidx));
-  }
 
-  /**
-   * join this array into one string delimited by a separator
-   *
-   * @param     sep the seperator to put in between the array elements
-   * @return    the joined String
-   */
-  String join(String sep) {
-    int no = 0;
-    StringBuffer sb = new StringBuffer();
-    while (no < v.size()) {
-      sb.append(v.elementAt(no));
-      if (++no < v.size()) sb.append(sep);
+    /**
+     * sets the object with a certain index
+     *
+     * @param     val the object' property to be set
+     * @param     idx the object's index in the array
+     * @param     prop the name of the object's property to be set;
+     *            currently can only be: name, attributes, contents, value
+     */
+    void setElementAt(Object val, int idx, String prop) {
+        Node n = (Node) v.elementAt(idx);
+        if (prop == Name) {
+            n.name = (String) val;
+        } else if (prop == Attributes) {
+            n.attributes = (Hashtable) val;
+        } else if (prop == Contents) {
+            n.contents = (JSArray) val;
+        } else if (prop == Value) {
+            n.value = (String) val;
+        }
     }
-    return sb.toString();
-  }
 
+    /**
+     * returns the length / size of the array
+     *
+     * @return    the array length
+     */
+    int length() {
+        return v.size();
+    }
+
+    /**
+     * splits a string into an array of strings, broken at a distinct separator
+     *
+     * @param     str the String to be split
+     * @param     sep the seperator at which to split
+     */
+    void split(String str, String sep) {
+        v.removeAllElements();
+        int oldidx = 0, newidx, skip = sep.length();
+        while ((newidx = str.indexOf(sep, oldidx)) != -1) {
+            v.addElement(str.substring(oldidx, newidx));
+            oldidx = newidx + skip;
+        }
+        v.addElement(str.substring(oldidx));
+    }
+
+    /**
+     * join this array into one string delimited by a separator
+     *
+     * @param     sep the seperator to put in between the array elements
+     * @return    the joined String
+     */
+    String join(String sep) {
+        int no = 0;
+        StringBuffer sb = new StringBuffer();
+        while (no < v.size()) {
+            sb.append(v.elementAt(no));
+            if (++no < v.size()) {
+                sb.append(sep);
+            }
+        }
+        return sb.toString();
+    }
 }

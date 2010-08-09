@@ -16,43 +16,49 @@
  */
 package twitterbase.api;
 
+import com.exploringxml.xml.Node;
 import java.util.Date;
 
 /**
  *
  * @author Ramin Gomari
  */
-public class User {
+public abstract class User {
 
     private long id;
-    private String name;
-    private String screen_name;
-    private String location;
-    private String description;
-    private String profile_image_url;
-    private String url;
-    private boolean Protected;
-    private int followers_count;
-    private String profile_background_color;
-    private String profile_text_color;
-    private String profile_link_color;
-    private String profile_sidebar_fill_color;
-    private String profile_sidebar_border_color;
-    private int friends_count;
-    private Date created_at;
-    private int favourites_count;
-    private long utc_offset;
-    private String time_zone;
-    private String profile_background_image_url;
-    private boolean profile_background_tile;
-    private int statuses_count;
-    private boolean following;
-    private boolean statusnet_blocking;
-    private boolean notifications;
+    private String name = "";
+    private String screen_name = "";
+    private String location = "";
+    private String description = "";
+    private String profile_image_url = "";
+    private String url = "";
+    private boolean Protected = false;
+    private int followers_count = -1;
+    private String profile_background_color = "";
+    private String profile_text_color = "";
+    private String profile_link_color = "";
+    private String profile_sidebar_fill_color = "";
+    private String profile_sidebar_border_color = "";
+    private int friends_count = -1;
+    private Date created_at = null;
+    private int favourites_count = -1;
+    private long utc_offset = -1;
+    private String time_zone = "";
+    private String profile_background_image_url = "";
+    private boolean profile_background_tile = false;
+    private int statuses_count = -1;
+    private boolean following = false;
+    private boolean notifications = false;
 
     public User(String name) {
         setName(name);
     }
+
+    public User(Node node) {
+        parseUserXML(node);
+    }
+
+    abstract protected void parseUserXML(Node node);
 
     /**
      * @return the id
@@ -377,20 +383,6 @@ public class User {
     }
 
     /**
-     * @return the statusnet_blocking
-     */
-    public boolean isStatusnet_blocking() {
-        return statusnet_blocking;
-    }
-
-    /**
-     * @param statusnet_blocking the statusnet_blocking to set
-     */
-    public void setStatusnet_blocking(boolean statusnet_blocking) {
-        this.statusnet_blocking = statusnet_blocking;
-    }
-
-    /**
      * @return the notifications
      */
     public boolean isNotifications() {
@@ -403,6 +395,4 @@ public class User {
     public void setNotifications(boolean notifications) {
         this.notifications = notifications;
     }
-
-
 }

@@ -62,7 +62,7 @@
         </Component>
     </Document>
     <FlowScene version="1">
+        <Node componentID="2" descriptorID="componentNode2" x="47" y="23"/>
         <Node componentID="14" descriptorID="componentNode14" x="278" y="162"/>
-        <Node componentID="2" descriptorID="componentNode2" x="24" y="26"/>
     </FlowScene>
 </VisualDesign>

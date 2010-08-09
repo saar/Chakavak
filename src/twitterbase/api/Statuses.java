@@ -21,5 +21,4 @@ package twitterbase.api;
  * @author Ramin Gomari
  */
 public interface Statuses {
-
 }

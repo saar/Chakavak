@@ -21,10 +21,11 @@ package twitterbase.api;
  * @author Ramin Gomari
  */
 public class Geo {
-    private long latitude;
-    private long longitude;
 
-    public Geo(long latitude, long longitude) {
+    private float latitude;
+    private float longitude;
+
+    public Geo(float latitude, float longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -33,31 +34,52 @@ public class Geo {
     }
 
     /**
+     * Create a geo from comma or space seprated string
+     * @param geo comma or space seprated of lat and long
+     */
+    public Geo(String geo) {
+        StringBuffer sb[] = new StringBuffer[2];
+        int index = 0;
+        sb[index] = new StringBuffer();
+        char c;
+        for (int i = 0; i < geo.length(); i++) {
+            c = geo.charAt(i);
+            if (c == ' ' || c == ',') {
+                sb[++index] = new StringBuffer();
+            } else {
+                sb[index].append(c);
+            }
+        }
+        latitude = Float.parseFloat(sb[0].toString());
+        longitude = Float.parseFloat(sb[1].toString());
+    }
+
+    /**
      * @return the latitude
      */
-    public long getLatitude() {
+    public float getLatitude() {
         return latitude;
     }
 
     /**
      * @param latitude the latitude to set
      */
-    public void setLatitude(long latitude) {
+    public void setLatitude(float latitude) {
         this.latitude = latitude;
     }
 
     /**
      * @return the longitude
      */
-    public long getLongitude() {
+    public float getLongitude() {
         return longitude;
     }
 
     /**
      * @param longitude the longitude to set
      */
-    public void setLongitude(long longitude) {
+    public void setLongitude(float longitude) {
         this.longitude = longitude;
     }
-    
+
 }

@@ -25,14 +25,23 @@ import java.io.IOException;
 public abstract class Api {
 
     abstract public Status update(
-            String status) throws IOException;
+            String status)
+            throws IOException,
+            StatusParsingException,
+            ParserException;
 
     abstract public Status update(
             String status,
-            long in_reply_to_status_id) throws IOException;
+            long in_reply_to_status_id)
+            throws IOException,
+            StatusParsingException,
+            ParserException;
 
     abstract public Status update(
             String status,
             long in_reply_to_status_id,
-            Geo geo) throws IOException;
+            Geo geo)
+            throws IOException,
+            StatusParsingException,
+            ParserException;
 }

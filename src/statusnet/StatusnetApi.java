@@ -16,6 +16,8 @@
  */
 package statusnet;
 
+import twitterbase.api.StatusParsingException;
+import twitterbase.api.ParserException;
 import http.HttpRequest;
 import http.HttpResponse;
 import java.io.IOException;
@@ -46,20 +48,29 @@ public class StatusnetApi extends twitterbase.api.Api {
         this.password = password;
     }
 
-    public twitterbase.api.Status update(String status) throws IOException {
+    public twitterbase.api.Status update(String status)
+            throws IOException,
+            ParserException,
+            StatusParsingException {
         return update(status, -1, null);
     }
 
     public twitterbase.api.Status update(
             String status,
-            long in_reply_to_status_id) throws IOException {
+            long in_reply_to_status_id)
+            throws IOException,
+            ParserException,
+            StatusParsingException {
         return update(status, in_reply_to_status_id, null);
     }
 
     public twitterbase.api.Status update(
             String status,
             long in_reply_to_status_id,
-            twitterbase.api.Geo geo) throws IOException {
+            twitterbase.api.Geo geo)
+            throws IOException,
+            ParserException,
+            StatusParsingException {
 
         HttpResponse response;
         Hashtable table = new Hashtable();
@@ -68,8 +79,8 @@ public class StatusnetApi extends twitterbase.api.Api {
             table.put("in_reply_to_status_id", new Long(in_reply_to_status_id));
         }
         if (geo != null) {
-            table.put("lat", new Long(geo.getLatitude()));
-            table.put("long", new Long(geo.getLongitude()));
+            table.put("lat", new Float(geo.getLatitude()));
+            table.put("long", new Float(geo.getLongitude()));
         }
         if (sourceApp != null && sourceApp.length() != 0) {
             table.put("source", sourceApp);
