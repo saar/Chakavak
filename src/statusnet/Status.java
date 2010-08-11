@@ -33,6 +33,9 @@ public class Status extends twitterbase.api.Status {
     public Status(String text) throws ParserException, StatusParsingException {
         super(text);
     }
+    public Status(Node status) throws ParserException, StatusParsingException {
+        super(status);
+    }
 
     /**
      * @return the statusnet_html
@@ -48,16 +51,13 @@ public class Status extends twitterbase.api.Status {
         this.statusnet_html = statusnet_html;
     }
 
-    protected void pars(String xml) throws ParserException, StatusParsingException {
+    protected void pars(Node root) throws ParserException, StatusParsingException {
         int occur[] = {1};
-        Node root = new Xparse().parse(xml).find("status", occur);
-        if (root == null) {
-            throw new ParserException("Can not parse \n" + xml);
-        }
+
         Node text = root.find("text", occur);
         Node id = root.find("id", occur);
         if (text == null || id == null) {
-            throw new StatusParsingException(xml);
+            throw new StatusParsingException(root);
         }
         setText(text.getCharacters());
         setId(Long.parseLong(id.getCharacters()));
@@ -116,6 +116,14 @@ public class Status extends twitterbase.api.Status {
 
             }
         }
+    }
 
+    protected void pars(String xml) throws ParserException, StatusParsingException {
+        int occur[] = {1};
+        Node root = new Xparse().parse(xml).find("status", occur);
+        if (root == null) {
+            throw new ParserException("Can not parse \n" + xml);
+        }
+        pars(root);
     }
 }

@@ -35,9 +35,13 @@ public class StatusnetApi extends twitterbase.api.Api {
     private String password;
     private static final String PUBLIC_TIMELINE = "/api/statuses/public_timeline.xml";
     private static final String FRIENDS_TIMELINE = "/api/statuses/home_timeline.xml";
+    private static final String HOME_TIMELINE = "/api/statuses/home_timeline.xml";
     private static final String USER_TIMELINE = "/api/statuses/user_timeline.xml";
     private static final String RESPONSES_TIMELINE = "/api/statuses/replies.xml";
     private static final String STATUS_UPDATE = "/api/statuses/update.xml";
+    private static final String STATUS_DESTROY = "/api/statuses/destroy/"; //destroy/:id.format
+    private static final String STATUS_RETWEET = "/api/statuses/retweet/"; //retweet/:id.format
+    private static final String STATUS_SHOW = "/api/statuses/show/"; //retweet/:id.format
     private static final String DIRECT_TIMELINE = "/api/direct_messages.xml";
     private static final String FRIENDS = "/api/statuses/friends.xml";
 
@@ -91,5 +95,70 @@ public class StatusnetApi extends twitterbase.api.Api {
                 password,
                 table);
         return new Status(response.getResponse());
+    }
+
+    public twitterbase.api.Status destroy(long id)
+            throws IOException,
+            StatusParsingException,
+            ParserException {
+        HttpResponse response;
+        Hashtable table = new Hashtable();
+        if (sourceApp != null && sourceApp.length() != 0) {
+            table.put("source", sourceApp);
+        }
+        response = HttpRequest.makeHttpPostRequest(
+                apiRoot + STATUS_DESTROY + Long.toString(id) + ".xml",
+                username,
+                password,
+                table);
+        return new Status(response.getResponse());
+    }
+
+    public twitterbase.api.Status redent(long id)
+            throws IOException,
+            StatusParsingException,
+            ParserException {
+        return retweet(id);
+    }
+
+    public twitterbase.api.Status retweet(long id)
+            throws IOException,
+            StatusParsingException,
+            ParserException {
+        HttpResponse response;
+        Hashtable table = new Hashtable();
+        if (sourceApp != null && sourceApp.length() != 0) {
+            table.put("source", sourceApp);
+        }
+        response = HttpRequest.makeHttpPostRequest(
+                apiRoot + STATUS_RETWEET + Long.toString(id) + ".xml",
+                username,
+                password,
+                table);
+        return new Status(response.getResponse());
+    }
+
+    public twitterbase.api.Status show(long id)
+            throws IOException,
+            StatusParsingException,
+            ParserException {
+        HttpResponse response;
+        response = HttpRequest.makeHttpGetRequest(
+                apiRoot + STATUS_SHOW + Long.toString(id) + ".xml",
+                null,
+                null);
+        return new Status(response.getResponse());
+    }
+
+    public twitterbase.api.Statuses home_timeline()
+            throws IOException,
+            StatusParsingException,
+            ParserException {
+        HttpResponse response;
+        response = HttpRequest.makeHttpGetRequest(
+                apiRoot + HOME_TIMELINE,
+                username,
+                password);
+        return new Statuses(response.getResponse());
     }
 }

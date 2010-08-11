@@ -14,39 +14,39 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package twitterbase.api;
+package statusnet;
 
-import java.util.Vector;
+import com.exploringxml.xml.Node;
+import com.exploringxml.xml.Xparse;
+import twitterbase.api.ParserException;
+import twitterbase.api.StatusParsingException;
 
 /**
  *
  * @author Ramin Gomari
  */
-public abstract class Statuses extends Vector {
+public class Statuses extends twitterbase.api.Statuses {
 
-    public Statuses(String text)
+    public Statuses(String xml)
             throws ParserException,
             StatusParsingException {
-        pars(text);
+        super(xml);
     }
 
-    public synchronized void addStatus(Status status) {
-        super.addElement(status);
-    }
-
-    public synchronized Status statusAt(int index) {
-        return (Status) super.elementAt(index);
-    }
-
-    public synchronized String toString() {
-        StringBuffer buffer = new StringBuffer();
-        for (int i = 0; i < size(); i++) {
-            buffer.append(statusAt(i).toString()).append("\n");
+    public void pars(String xml) throws ParserException, StatusParsingException {
+        int occur[] = {1};
+        Node root = new Xparse().parse(xml).find("statuses", occur);
+        if (root == null) {
+            throw new ParserException("Can not parse \n" + xml);
         }
-        return buffer.toString();
-    }
+        occur = new int[2];
+        occur[0] = occur[1] = 1;
+        Node status = null;
 
-    public abstract void pars(String text)
-            throws ParserException,
-            StatusParsingException;
+        while ((status = root.find("status", occur)) != null) {
+            addStatus(new Status(status));
+        }
+
+
+    }
 }

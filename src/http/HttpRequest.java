@@ -17,9 +17,11 @@
 package http;
 
 import http.encoder.Encoder;
-import java.io.DataInputStream;
+import java.io.EOFException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import javax.microedition.io.Connector;
@@ -40,7 +42,7 @@ public class HttpRequest {
 
         OutputStream out = null;
         HttpConnection connection = null;
-        DataInputStream in = null;
+        InputStreamReader in = null;
         HttpResponse httpResponse = null;
 
         StringBuffer data = new StringBuffer();
@@ -93,16 +95,16 @@ public class HttpRequest {
             }
 
 
-
 //            int length = (int) connection.getLength();
 //            byte[] responseData = null;
 //            if (length != -1) {
 //                responseData = new byte[length];
-//                in = new DataInputStream(connection.openInputStream());
+//                in = new  DataInputStream(connection.openInputStream());
 //                in.readFully(responseData);
+//
 //            } else {
 //                // If content length is not given, read in chunks.
-//                int chunkSize = 512;
+//                int chunkSize = 1024;
 //                int index = 0;
 //                int readLength = 0;
 //                in = new DataInputStream(connection.openInputStream());
@@ -118,11 +120,21 @@ public class HttpRequest {
 //                } while (readLength == chunkSize);
 //                length = index;
 //            }
+//            if (length < responseData.length) {
+//                byte[] newData = new byte[length];
+//                System.arraycopy(responseData, 0, newData, 0, length);
+//                responseData = newData;
+//            }
+//            httpResponse = new HttpResponse(responseData);
             StringBuffer buffer = new StringBuffer();
-            in = new DataInputStream(connection.openInputStream());
-            int temp;
-            while ((temp = in.read()) != -1) {
-                buffer.append((char) temp);
+            try {
+                in = new InputStreamReader(connection.openInputStream(), "UTF-8");
+            } catch (UnsupportedEncodingException exception) {
+                in = new InputStreamReader(connection.openInputStream());
+            }
+            int readedChar;
+            while ((readedChar = in.read()) != -1) {
+                buffer.append((char) readedChar);
             }
 
             httpResponse = new HttpResponse(buffer.toString());
@@ -162,5 +174,3 @@ public class HttpRequest {
         return makeHttpRequest(HttpConnection.POST, url, username, password, parameters);
     }
 }
-
-

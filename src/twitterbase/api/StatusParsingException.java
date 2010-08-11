@@ -16,6 +16,8 @@
  */
 package twitterbase.api;
 
+import com.exploringxml.xml.Node;
+
 /**
  *
  * @author Ramin Gomari
@@ -25,4 +27,9 @@ public class StatusParsingException extends Exception {
     public StatusParsingException(String s) {
         super(s);
     }
+
+    public StatusParsingException(Node node) {
+        super();
+    }
+
 }

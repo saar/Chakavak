@@ -24,12 +24,38 @@ import java.io.IOException;
  */
 public abstract class Api {
 
+    /**
+     * Updates the authenticating user's status. A status update with
+     * text identical to the authenticating user's text identical to
+     * the authenticating user's current status will be ignored to
+     * prevent duplicates.
+     * @param status The text of your status update, up to 140 characters.
+     * URL encode as necessary. 
+     * @return a single status
+     * @throws IOException
+     * @throws StatusParsingException
+     * @throws ParserException
+     */
     abstract public Status update(
             String status)
             throws IOException,
             StatusParsingException,
             ParserException;
 
+    /**
+     * Updates the authenticating user's status. A status update with
+     * text identical to the authenticating user's text identical to
+     * the authenticating user's current status will be ignored to
+     * prevent duplicates.
+     * @param status The text of your status update, up to 140 characters.
+     * URL encode as necessary.
+     * @param in_reply_to_status_id The ID of an existing status that the
+     * update is in reply to.
+     * @return a single status
+     * @throws IOException
+     * @throws StatusParsingException
+     * @throws ParserException
+     */
     abstract public Status update(
             String status,
             long in_reply_to_status_id)
@@ -37,10 +63,86 @@ public abstract class Api {
             StatusParsingException,
             ParserException;
 
+    /**
+     * Updates the authenticating user's status. A status update with 
+     * text identical to the authenticating user's text identical to 
+     * the authenticating user's current status will be ignored to 
+     * prevent duplicates.
+     * @param status The text of your status update, up to 140 characters. 
+     * URL encode as necessary. 
+     * @param in_reply_to_status_id The ID of an existing status that the
+     * update is in reply to. 
+     * @param geo The the location this tweet refers to. 
+     * @return a single status
+     * @throws IOException
+     * @throws StatusParsingException
+     * @throws ParserException
+     */
     abstract public Status update(
             String status,
             long in_reply_to_status_id,
             Geo geo)
+            throws IOException,
+            StatusParsingException,
+            ParserException;
+
+    /**
+     * Destroys the status specified by the required ID parameter. 
+     * The authenticating user must be the author of the specified status.
+     * @param id The numerical ID of the desired status. 
+     * @return a single status that was deleted
+     * @throws IOException
+     * @throws StatusParsingException
+     * @throws ParserException
+     */
+    abstract public Status destroy(long id)
+            throws IOException,
+            StatusParsingException,
+            ParserException;
+
+    /**
+     * Returns a single status, specified by the id parameter below.
+     * The status's author will be returned inline.
+     * @param id The numerical ID of the desired status. 
+     * @return a single status, specified by the id parameter
+     * @throws IOException
+     * @throws StatusParsingException
+     * @throws ParserException
+     */
+    abstract public Status show(long id)
+            throws IOException,
+            StatusParsingException,
+            ParserException;
+
+    /**
+     * Retweets a tweet. Returns the original tweet with
+     * retweet details embedded.
+     * @param id The numerical ID of the desired status.
+     * @return a single status
+     * @throws IOException
+     * @throws StatusParsingException
+     * @throws ParserException
+     */
+    abstract public Status retweet(long id)
+            throws IOException,
+            StatusParsingException,
+            ParserException;
+
+    /**
+     * Returns the 20 most recent statuses, including retweets 
+     * if they exist, posted by the authenticating user and 
+     * the user's they follow. This is the same timeline seen 
+     * by a user when they login to twitter.com.
+     * 
+     * This method is identical to statuses/friends_timeline, 
+     * except that this method always includes retweets.
+     * 
+     * This method is can only return up to 800 statuses, 
+     * including retweets.
+
+     * @return 
+     */
+    abstract public Statuses home_timeline()
             throws IOException,
             StatusParsingException,
             ParserException;

@@ -8,11 +8,10 @@ import java.io.IOException;
 import java.util.Date;
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
-import statusnet.Geo;
+import statusnet.Status;
 import statusnet.StatusnetApi;
 import twitterbase.api.ParserException;
 import twitterbase.api.StatusParsingException;
-import utilities.DateTools;
 
 /**
  * @author ramin
@@ -181,7 +180,9 @@ public class HelloMIDlet extends MIDlet implements CommandListener {
                 initialize();
                 startMIDlet();
                 StatusnetApi api = new StatusnetApi("http://identi.ca", "Chakavak", "chakavak", "kavakahc");
-                System.out.println(api.update("test at " + new Date().toString()));
+//                Status status = (Status) api.update("یک دنت فارسی  " + new Date().toString());
+//                System.out.println(api.show(45742710).toString());
+                System.out.println(api.home_timeline().toString());
 
             } catch (IOException ex) {
                 ex.printStackTrace();

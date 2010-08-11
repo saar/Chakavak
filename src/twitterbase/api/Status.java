@@ -16,6 +16,7 @@
  */
 package twitterbase.api;
 
+import com.exploringxml.xml.Node;
 import java.util.Date;
 
 /**
@@ -40,7 +41,13 @@ public abstract class Status {
         pars(text);
     }
 
+    public Status(Node node) throws ParserException, StatusParsingException {
+        pars(node);
+    }
+
     abstract protected void pars(String text) throws ParserException, StatusParsingException;
+
+    abstract protected void pars(Node status) throws ParserException, StatusParsingException;
 
     /**
      * @return the id
@@ -194,5 +201,9 @@ public abstract class Status {
      */
     public void setFavorited(boolean favorited) {
         this.favorited = favorited;
+    }
+
+    public String toString() {
+        return getText();
     }
 }
