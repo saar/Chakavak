@@ -16,7 +16,7 @@
  */
 package twitterbase.api;
 
-import com.exploringxml.xml.Node;
+import org.kxml2.io.KXmlParser;
 
 /**
  *
@@ -28,7 +28,7 @@ public class StatusParsingException extends Exception {
         super(s);
     }
 
-    public StatusParsingException(Node node) {
+    public StatusParsingException(KXmlParser parser) {
         super();
     }
 

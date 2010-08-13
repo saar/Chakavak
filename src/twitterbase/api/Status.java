@@ -1,209 +1,136 @@
 /*
  *  Copyright (C) 2010 Ramin Gomari
- * 
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
- * 
+ *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
- * 
+ *
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package twitterbase.api;
 
-import com.exploringxml.xml.Node;
 import java.util.Date;
 
 /**
  *
  * @author Ramin Gomari
  */
-public abstract class Status {
-
-    private long id = -1;
-    private String text = "";
-    private boolean truncated = false;
-    private Date create_at = null;
-    private long in_reply_to_status_id = -1;
-    private String source = "";
-    private User user = null;
-    private long in_reply_to_user_id = -1;
-    private String in_reply_to_screen_name = "";
-    private Geo geo = null;
-    private boolean favorited = false;
-
-    public Status(String text) throws ParserException, StatusParsingException {
-        pars(text);
-    }
-
-    public Status(Node node) throws ParserException, StatusParsingException {
-        pars(node);
-    }
-
-    abstract protected void pars(String text) throws ParserException, StatusParsingException;
-
-    abstract protected void pars(Node status) throws ParserException, StatusParsingException;
+public interface Status {
 
     /**
      * @return the id
      */
-    public long getId() {
-        return id;
-    }
+    public long getId();
 
     /**
      * @param id the id to set
      */
-    public void setId(long id) {
-        this.id = id;
-    }
+    public void setId(long id);
 
     /**
      * @return the text
      */
-    public String getText() {
-        return text;
-    }
+    public String getText();
 
     /**
      * @param text the text to set
      */
-    public void setText(String text) {
-        this.text = text;
-    }
+    public void setText(String text);
 
     /**
      * @return the truncated
      */
-    public boolean isTruncated() {
-        return truncated;
-    }
+    public boolean isTruncated();
 
     /**
      * @param truncated the truncated to set
      */
-    public void setTruncated(boolean truncated) {
-        this.truncated = truncated;
-    }
+    public void setTruncated(boolean truncated);
 
     /**
      * @return the create_at
      */
-    public Date getCreate_at() {
-        return create_at;
-    }
+    public Date getCreate_at();
 
     /**
      * @param create_at the create_at to set
      */
-    public void setCreate_at(Date create_at) {
-        this.create_at = create_at;
-    }
+    public void setCreate_at(Date create_at);
 
     /**
      * @return the in_reply_to_status_id
      */
-    public long getIn_reply_to_status_id() {
-        return in_reply_to_status_id;
-    }
+    public long getIn_reply_to_status_id();
 
     /**
      * @param in_reply_to_status_id the in_reply_to_status_id to set
      */
-    public void setIn_reply_to_status_id(long in_reply_to_status_id) {
-        this.in_reply_to_status_id = in_reply_to_status_id;
-    }
+    public void setIn_reply_to_status_id(long in_reply_to_status_id);
 
     /**
      * @return the source
      */
-    public String getSource() {
-        return source;
-    }
+    public String getSource();
 
     /**
      * @param source the source to set
      */
-    public void setSource(String source) {
-        this.source = source;
-    }
+    public void setSource(String source);
 
     /**
      * @return the user
      */
-    public User getUser() {
-        return user;
-    }
+    public User getUser();
 
     /**
      * @param user the user to set
      */
-    public void setUser(User user) {
-        this.user = user;
-    }
+    public void setUser(User user);
 
     /**
      * @return the in_reply_to_user_id
      */
-    public long getIn_reply_to_user_id() {
-        return in_reply_to_user_id;
-    }
+    public long getIn_reply_to_user_id();
 
     /**
      * @param in_reply_to_user_id the in_reply_to_user_id to set
      */
-    public void setIn_reply_to_user_id(long in_reply_to_user_id) {
-        this.in_reply_to_user_id = in_reply_to_user_id;
-    }
+    public void setIn_reply_to_user_id(long in_reply_to_user_id);
 
     /**
      * @return the in_reply_to_screen_name
      */
-    public String getIn_reply_to_screen_name() {
-        return in_reply_to_screen_name;
-    }
+    public String getIn_reply_to_screen_name();
 
     /**
      * @param in_reply_to_screen_name the in_reply_to_screen_name to set
      */
-    public void setIn_reply_to_screen_name(String in_reply_to_screen_name) {
-        this.in_reply_to_screen_name = in_reply_to_screen_name;
-    }
+    public void setIn_reply_to_screen_name(String in_reply_to_screen_name);
 
     /**
      * @return the geo
      */
-    public Geo getGeo() {
-        return geo;
-    }
+    public Geo getGeo();
 
     /**
      * @param geo the geo to set
      */
-    public void setGeo(Geo geo) {
-        this.geo = geo;
-    }
+    public void setGeo(Geo geo);
 
     /**
      * @return the favorited
      */
-    public boolean isFavorited() {
-        return favorited;
-    }
+    public boolean isFavorited();
 
     /**
      * @param favorited the favorited to set
      */
-    public void setFavorited(boolean favorited) {
-        this.favorited = favorited;
-    }
-
-    public String toString() {
-        return getText();
-    }
+    public void setFavorited(boolean favorited);
 }

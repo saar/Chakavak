@@ -14,27 +14,18 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package statusnet;
+package utilities;
+
+import java.io.IOException;
+import org.xmlpull.v1.XmlPullParserException;
 
 /**
  *
  * @author Ramin Gomari
  */
-public class Geo extends twitter.Geo {
+public interface Setter {
 
-    public Geo(long latitude, long longitude) {
-        super(latitude, longitude);
-    }
-
-    public Geo() {
-        super();
-    }
-
-    /**
-     * Create a geo from comma or space seprated string
-     * @param geo comma or space seprated of lat and long
-     */
-    public Geo(String geo) {
-        super(geo);
-    }
+    public boolean set(String key, Object value)
+            throws XmlPullParserException,
+            IOException;
 }

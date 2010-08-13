@@ -16,12 +16,13 @@
  */
 package statusnet;
 
-import twitterbase.api.StatusParsingException;
-import twitterbase.api.ParserException;
 import http.HttpRequest;
 import http.HttpResponse;
 import java.io.IOException;
 import java.util.Hashtable;
+import twitterbase.api.Geo;
+import twitterbase.api.ParserException;
+import twitterbase.api.StatusParsingException;
 
 /**
  *
@@ -94,7 +95,7 @@ public class StatusnetApi extends twitterbase.api.Api {
                 username,
                 password,
                 table);
-        return new Status(response.getResponse());
+        return new Status(response);
     }
 
     public twitterbase.api.Status destroy(long id)
@@ -111,7 +112,7 @@ public class StatusnetApi extends twitterbase.api.Api {
                 username,
                 password,
                 table);
-        return new Status(response.getResponse());
+        return new Status(response);
     }
 
     public twitterbase.api.Status redent(long id)
@@ -135,7 +136,7 @@ public class StatusnetApi extends twitterbase.api.Api {
                 username,
                 password,
                 table);
-        return new Status(response.getResponse());
+        return new Status(response);
     }
 
     public twitterbase.api.Status show(long id)
@@ -147,18 +148,66 @@ public class StatusnetApi extends twitterbase.api.Api {
                 apiRoot + STATUS_SHOW + Long.toString(id) + ".xml",
                 null,
                 null);
-        return new Status(response.getResponse());
+        return new Status(response);
     }
 
     public twitterbase.api.Statuses home_timeline()
             throws IOException,
             StatusParsingException,
             ParserException {
+        return home_timeline(-1, -1, -1);
+    }
+
+    public twitterbase.api.Statuses home_timeline(long since_id,
+            long max_id,
+            int count)
+            throws IOException,
+            StatusParsingException,
+            ParserException {
+        return getTimeline(since_id, max_id, count, apiRoot + HOME_TIMELINE);
+    }
+
+    public twitterbase.api.Statuses friends_timeline()
+            throws IOException,
+            StatusParsingException,
+            ParserException {
+        return friends_timeline(-1, -1, -1);
+    }
+
+    public twitterbase.api.Statuses friends_timeline(long since_id,
+            long max_id,
+            int count)
+            throws IOException,
+            StatusParsingException,
+            ParserException {
+        return getTimeline(since_id, max_id, count, apiRoot + FRIENDS_TIMELINE);
+    }
+
+    public twitterbase.api.Statuses getTimeline(long since_id,
+            long max_id,
+            int count,
+            String address)
+            throws IOException,
+            StatusParsingException,
+            ParserException {
+        Hashtable table = new Hashtable();
+        if (since_id != -1) {
+            table.put("since_id", new Long(since_id));
+        }
+
+        if (max_id != -1) {
+            table.put("max_id", new Long(max_id));
+        }
+
+        if (count != -1) {
+            table.put("count", new Integer(count));
+        }
+
         HttpResponse response;
         response = HttpRequest.makeHttpGetRequest(
-                apiRoot + HOME_TIMELINE,
+                address,
                 username,
-                password);
-        return new Statuses(response.getResponse());
+                password, table);
+        return new Statuses(response);
     }
 }

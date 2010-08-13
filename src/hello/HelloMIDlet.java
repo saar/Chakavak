@@ -5,10 +5,8 @@
 package hello;
 
 import java.io.IOException;
-import java.util.Date;
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
-import statusnet.Status;
 import statusnet.StatusnetApi;
 import twitterbase.api.ParserException;
 import twitterbase.api.StatusParsingException;
@@ -176,21 +174,22 @@ public class HelloMIDlet extends MIDlet implements CommandListener {
         if (midletPaused) {
             resumeMIDlet();
         } else {
+            initialize();
+            startMIDlet();
+            StatusnetApi api = new StatusnetApi("http://identi.ca", "Chakavak", "chakavak", "kavakahc");
             try {
-                initialize();
-                startMIDlet();
-                StatusnetApi api = new StatusnetApi("http://identi.ca", "Chakavak", "chakavak", "kavakahc");
-//                Status status = (Status) api.update("یک دنت فارسی  " + new Date().toString());
-//                System.out.println(api.show(45742710).toString());
-                System.out.println(api.home_timeline().toString());
-
+//                                System.out.println(api.show(45742710).toString());
+                //                System.out.println(api.show(45742710).toString());
+                System.out.println(api.friends_timeline(-1, -1, 10).toString());
             } catch (IOException ex) {
-                ex.printStackTrace();
-            } catch (ParserException ex) {
                 ex.printStackTrace();
             } catch (StatusParsingException ex) {
                 ex.printStackTrace();
+            } catch (ParserException ex) {
+                ex.printStackTrace();
             }
+
+
 
         }
         midletPaused = false;

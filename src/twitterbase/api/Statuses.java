@@ -16,37 +16,17 @@
  */
 package twitterbase.api;
 
-import java.util.Vector;
-
 /**
  *
  * @author Ramin Gomari
  */
-public abstract class Statuses extends Vector {
+public interface Statuses {
 
-    public Statuses(String text)
-            throws ParserException,
-            StatusParsingException {
-        pars(text);
-    }
+    public Status statusAt(int index);
 
-    public synchronized void addStatus(Status status) {
-        super.addElement(status);
-    }
+    public void addStatus(Status status);
 
-    public synchronized Status statusAt(int index) {
-        return (Status) super.elementAt(index);
-    }
+    public void addStatuses(final Statuses s);
 
-    public synchronized String toString() {
-        StringBuffer buffer = new StringBuffer();
-        for (int i = 0; i < size(); i++) {
-            buffer.append(statusAt(i).toString()).append("\n");
-        }
-        return buffer.toString();
-    }
-
-    public abstract void pars(String text)
-            throws ParserException,
-            StatusParsingException;
+    public int size();
 }

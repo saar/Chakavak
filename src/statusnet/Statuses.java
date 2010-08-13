@@ -16,8 +16,7 @@
  */
 package statusnet;
 
-import com.exploringxml.xml.Node;
-import com.exploringxml.xml.Xparse;
+import http.HttpResponse;
 import twitterbase.api.ParserException;
 import twitterbase.api.StatusParsingException;
 
@@ -25,28 +24,11 @@ import twitterbase.api.StatusParsingException;
  *
  * @author Ramin Gomari
  */
-public class Statuses extends twitterbase.api.Statuses {
+public class Statuses extends twitter.Statuses {
 
-    public Statuses(String xml)
+    public Statuses(HttpResponse hr)
             throws ParserException,
             StatusParsingException {
-        super(xml);
-    }
-
-    public void pars(String xml) throws ParserException, StatusParsingException {
-        int occur[] = {1};
-        Node root = new Xparse().parse(xml).find("statuses", occur);
-        if (root == null) {
-            throw new ParserException("Can not parse \n" + xml);
-        }
-        occur = new int[2];
-        occur[0] = occur[1] = 1;
-        Node status = null;
-
-        while ((status = root.find("status", occur)) != null) {
-            addStatus(new Status(status));
-        }
-
-
+        super(hr);
     }
 }

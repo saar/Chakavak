@@ -16,25 +16,41 @@
  */
 package statusnet;
 
-import twitterbase.api.StatusParsingException;
+import http.HttpResponse;
+import org.xmlpull.v1.XmlPullParserException;
+import java.io.IOException;
+import org.kxml2.io.KXmlParser;
 import twitterbase.api.ParserException;
-import com.exploringxml.xml.Node;
-import com.exploringxml.xml.Xparse;
-import utilities.DateTools;
+import twitterbase.api.StatusParsingException;
 
 /**
  *
  * @author Ramin Gomari
  */
-public class Status extends twitterbase.api.Status {
+public class Status extends twitter.Status {
 
     private String statusnet_html = "";
 
-    public Status(String text) throws ParserException, StatusParsingException {
-        super(text);
+    public Status(KXmlParser parser)
+            throws XmlPullParserException,
+            IOException {
+        super(parser);
     }
-    public Status(Node status) throws ParserException, StatusParsingException {
-        super(status);
+
+    public Status(HttpResponse hr)
+            throws ParserException,
+            StatusParsingException {
+        super(hr);
+    }
+
+    public boolean set(String key, Object value) throws XmlPullParserException, IOException {
+        if (super.set(key, value)) {
+        } else if (key.compareTo("statusnet:html") == 0) {
+            setStatusnet_html((String) value);
+        } else {
+            return false;
+        }
+        return true; //else else ;)
     }
 
     /**
@@ -49,81 +65,5 @@ public class Status extends twitterbase.api.Status {
      */
     public void setStatusnet_html(String statusnet_html) {
         this.statusnet_html = statusnet_html;
-    }
-
-    protected void pars(Node root) throws ParserException, StatusParsingException {
-        int occur[] = {1};
-
-        Node text = root.find("text", occur);
-        Node id = root.find("id", occur);
-        if (text == null || id == null) {
-            throw new StatusParsingException(root);
-        }
-        setText(text.getCharacters());
-        setId(Long.parseLong(id.getCharacters()));
-        Node tempNode = root.find("created_at", occur);
-        if (tempNode != null) {
-            setCreate_at(DateTools.parseDate(tempNode.getCharacters()));
-        }
-
-        tempNode = root.find("truncated", occur);
-        if (tempNode != null) {
-            setTruncated(tempNode.getCharacters().equalsIgnoreCase("true") ? true : false);
-        }
-
-        tempNode = root.find("favorited", occur);
-        if (tempNode != null) {
-            setTruncated(tempNode.getCharacters().equalsIgnoreCase("true") ? true : false);
-        }
-
-        tempNode = root.find("in_reply_to_status_id", occur);
-        if (tempNode != null && tempNode.getCharacters().length() != 0) {
-            setIn_reply_to_status_id(Long.parseLong(tempNode.getCharacters()));
-        }
-        tempNode = root.find("in_reply_to_user_id", occur);
-        if (tempNode != null && tempNode.getCharacters().length() != 0) {
-            setIn_reply_to_user_id(Long.parseLong(tempNode.getCharacters()));
-        }
-
-        tempNode = root.find("in_reply_to_screen_name", occur);
-        if (tempNode != null) {
-            setIn_reply_to_screen_name(tempNode.getCharacters());
-        }
-
-
-        tempNode = root.find("source", occur);
-        if (tempNode != null) {
-            setSource(tempNode.getCharacters());
-        }
-
-        tempNode = root.find("user", occur);
-        if (tempNode != null) {
-            setUser(new User(tempNode));
-        }
-
-        tempNode = root.find("statusnet:html", occur);
-        if (tempNode != null) {
-            setStatusnet_html(tempNode.getCharacters());
-        }
-
-
-        tempNode = root.find("geo", occur);
-        if (tempNode != null) {
-            tempNode = tempNode.find("georss:point", occur);
-
-            if (tempNode != null) {
-                setGeo(new Geo(tempNode.getCharacters()));
-
-            }
-        }
-    }
-
-    protected void pars(String xml) throws ParserException, StatusParsingException {
-        int occur[] = {1};
-        Node root = new Xparse().parse(xml).find("status", occur);
-        if (root == null) {
-            throw new ParserException("Can not parse \n" + xml);
-        }
-        pars(root);
     }
 }

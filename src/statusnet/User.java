@@ -16,24 +16,44 @@
  */
 package statusnet;
 
-import com.exploringxml.xml.Node;
-import utilities.DateTools;
+import http.HttpResponse;
+import java.io.IOException;
+import org.kxml2.io.KXmlParser;
+import org.xmlpull.v1.XmlPullParserException;
+import twitterbase.api.ParserException;
+import twitterbase.api.UserParsingException;
 
 /**
  *
  * @author Ramin Gomari
  */
-public class User extends twitterbase.api.User {
+public class User extends twitter.User {
 
-    private String statusnet_profile_url = "";
+    private String statusnet_profile_url = null;
     private boolean statusnet_blocking = false;
 
-    public User(String name) {
-        super(name);
+    public User(HttpResponse hr)
+            throws ParserException,
+            UserParsingException {
+        super(hr);
     }
 
-    public User(Node node) {
-        super(node);
+    public User(KXmlParser parser) throws XmlPullParserException, IOException{
+        super(parser);
+    }
+
+    public boolean set(String key, Object value)
+            throws XmlPullParserException,
+            IOException {
+        if (super.set(key, value)) {
+        } else if (key.compareTo("statusnet:profile_url") == 0) {
+            setStatusnet_profile_url((String) value);
+        } else if (key.compareTo("statusnet:blocking") == 0) {
+            setStatusnet_blocking(((String) value).compareTo("true") == 0);
+        } else {
+            return false;
+        }
+        return true; //else else ;)
     }
 
     /**
@@ -63,144 +83,4 @@ public class User extends twitterbase.api.User {
     public void setStatusnet_blocking(boolean statusnet_blocking) {
         this.statusnet_blocking = statusnet_blocking;
     }
-
-    protected void parseUserXML(Node node) {
-        int occur[] = {1};
-        Node tempNode = node.find("id", occur);
-        if (tempNode != null && tempNode.getCharacters().length() != 0) {
-            setId(Long.parseLong(tempNode.getCharacters()));
-        } else {
-            setId(-1);
-        }
-
-        tempNode = node.find("name", occur);
-        if (tempNode != null) {
-            setName(tempNode.getCharacters());
-        }
-
-        tempNode = node.find("screen_name", occur);
-        if (tempNode != null) {
-            setScreen_name(tempNode.getCharacters());
-        }
-
-        tempNode = node.find("location", occur);
-        if (tempNode != null) {
-            setLocation(tempNode.getCharacters());
-        }
-
-        tempNode = node.find("description", occur);
-        if (tempNode != null) {
-            setDescription(tempNode.getCharacters());
-        }
-
-
-        tempNode = node.find("profile_image_url", occur);
-        if (tempNode != null) {
-            setProfile_image_url(tempNode.getCharacters());
-        }
-
-        tempNode = node.find("url", occur);
-        if (tempNode != null) {
-            setUrl(tempNode.getCharacters());
-        }
-
-        tempNode = node.find("followers_count", occur);
-        if (tempNode != null) {
-            setFollowers_count(Integer.parseInt(tempNode.getCharacters()));
-        }
-
-        tempNode = node.find("friends_count", occur);
-        if (tempNode != null) {
-            setFriends_count(Integer.parseInt(tempNode.getCharacters()));
-        }
-
-        tempNode = node.find("favourites_count", occur);
-        if (tempNode != null) {
-            setFavourites_count(Integer.parseInt(tempNode.getCharacters()));
-        }
-
-        tempNode = node.find("statuses_count", occur);
-        if (tempNode != null) {
-            setStatuses_count(Integer.parseInt(tempNode.getCharacters()));
-        }
-
-        tempNode = node.find("profile_background_color", occur);
-        if (tempNode != null) {
-            setProfile_background_color(tempNode.getCharacters());
-        }
-
-        tempNode = node.find("profile_text_color", occur);
-        if (tempNode != null) {
-            setProfile_text_color(tempNode.getCharacters());
-        }
-
-        tempNode = node.find("profile_link_color", occur);
-        if (tempNode != null) {
-            setProfile_link_color(tempNode.getCharacters());
-        }
-
-        tempNode = node.find("profile_sidebar_fill_color", occur);
-        if (tempNode != null) {
-            setProfile_sidebar_fill_color(tempNode.getCharacters());
-        }
-
-        tempNode = node.find("profile_sidebar_border_color", occur);
-        if (tempNode != null) {
-            setProfile_sidebar_border_color(tempNode.getCharacters());
-        }
-
-        tempNode = node.find("time_zone", occur);
-        if (tempNode != null) {
-            setTime_zone(tempNode.getCharacters());
-        }
-
-        tempNode = node.find("utc_offset", occur);
-        if (tempNode != null) {
-            setUtc_offset(Long.parseLong(tempNode.getCharacters()));
-        }
-
-        tempNode = node.find("profile_background_image_url", occur);
-        if (tempNode != null) {
-            setProfile_background_image_url(tempNode.getCharacters());
-        }
-
-        tempNode = node.find("statusnet:profile_url", occur);
-        if (tempNode != null) {
-            setStatusnet_profile_url(tempNode.getCharacters());
-        }
-
-
-
-        tempNode = node.find("profile_background_tile", occur);
-        if (tempNode != null) {
-            setProfile_background_tile(tempNode.getCharacters().equalsIgnoreCase("true") ? true : false);
-        }
-
-
-        tempNode = node.find("protected", occur);
-        if (tempNode != null) {
-            setProtected(tempNode.getCharacters().equalsIgnoreCase("true") ? true : false);
-        }
-
-        tempNode = node.find("statusnet:blocking", occur);
-        if (tempNode != null) {
-            setStatusnet_blocking(tempNode.getCharacters().equalsIgnoreCase("true") ? true : false);
-        }
-
-        tempNode = node.find("following", occur);
-        if (tempNode != null) {
-            setFollowing(tempNode.getCharacters().equalsIgnoreCase("true") ? true : false);
-        }
-
-        tempNode = node.find("notifications", occur);
-        if (tempNode != null) {
-            setFollowing(tempNode.getCharacters().equalsIgnoreCase("true") ? true : false);
-        }
-
-        tempNode = node.find("created_at", occur);
-        if (tempNode != null) {
-            setCreated_at(DateTools.parseDate(tempNode.getCharacters()));
-        }
-    }
-
 }

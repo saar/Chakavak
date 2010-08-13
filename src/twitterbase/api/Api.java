@@ -140,9 +140,83 @@ public abstract class Api {
      * This method is can only return up to 800 statuses, 
      * including retweets.
 
-     * @return 
+     * @return a set of statuses
      */
     abstract public Statuses home_timeline()
+            throws IOException,
+            StatusParsingException,
+            ParserException;
+
+    /**
+     * Returns the 20 most recent statuses, including retweets
+     * if they exist, posted by the authenticating user and
+     * the user's they follow. This is the same timeline seen
+     * by a user when they login to twitter.com.
+     *
+     * This method is identical to statuses/friends_timeline,
+     * except that this method always includes retweets.
+     *
+     * This method is can only return up to 800 statuses,
+     * including retweets.
+     * @param since_id Returns results with an ID greater
+     * than (that is, more recent than) the specified ID.
+     * @param max_id Returns results with an ID less than
+     * (that is, older than) or equal to the specified ID.
+     * @param count Specifies the number of records to
+     * retrieve. May not be greater than 200.
+     * @return a set of statuses
+     */
+    abstract public Statuses home_timeline(long since_id,
+            long max_id, int count)
+            throws IOException,
+            StatusParsingException,
+            ParserException;
+
+    /**
+     * Returns the 20 most recent statuses posted by the authenticating
+     * user and that user's friends. This is the equivalent of
+     * /timeline/home on the Web.
+     * @return a set of statuses
+     */
+    abstract public Statuses friends_timeline()
+            throws IOException,
+            StatusParsingException,
+            ParserException;
+
+    /**
+     * Returns the 20 most recent statuses posted by the authenticating
+     * user and that user's friends. This is the equivalent of
+     * /timeline/home on the Web.
+     * @param since_id Returns results with an ID greater
+     * than (that is, more recent than) the specified ID.
+     * @param max_id Returns results with an ID less than
+     * (that is, older than) or equal to the specified ID.
+     * @param count Specifies the number of records to
+     * retrieve. May not be greater than 200.
+     * @return a set of statuses
+     */
+    abstract public Statuses friends_timeline(long since_id,
+            long max_id,
+            int count)
+            throws IOException,
+            StatusParsingException,
+            ParserException;
+
+    /**
+     *  Returns the most recent statuses on the time line.
+     * @param since_id Returns results with an ID greater
+     * than (that is, more recent than) the specified ID. Set it -1 to disable.
+     * @param max_id Returns results with an ID less than
+     * (that is, older than) or equal to the specified ID. Set it -1 to disable.
+     * @param count count Specifies the number of records to
+     * retrieve. May not be greater than 200. Set it -1 to disable.
+     * @param address time line address
+     * @return a set of statuses
+     */
+    abstract public twitterbase.api.Statuses getTimeline(long since_id,
+            long max_id,
+            int count,
+            String address)
             throws IOException,
             StatusParsingException,
             ParserException;
